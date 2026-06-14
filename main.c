@@ -7,16 +7,13 @@
 
 int main()
 {
-    FILE *f = fopen("replay.txt", "w");
-    if(f)
-        fclose(f);
-
     int choice;
 
     srand(time(NULL));
 
     printf("1. Multiplayer\n");
     printf("2. Singleplayer\n");
+    printf("3. Replay\n");
     scanf("%d", &choice);
 
     if(choice == 2)
@@ -24,6 +21,17 @@ int main()
         singlePlayerGame();
         return 0;
     }
+
+    if(choice == 3)
+    {
+        replayGame();
+        return 0;
+    }
+
+    FILE *f = fopen("replay.txt", "w");
+
+    if(f)
+        fclose(f);
 
     Player p1, p2;
 
