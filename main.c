@@ -1,8 +1,20 @@
 #include <stdio.h>
 #include "game.h"
+#include "singleplayer.h"
+#include <stdlib.h>
+#include <time.h>
 
 int main()
 {
+    int choice;
+    srand(time(NULL));
+    printf("1. Multiplayer\n");
+    printf("2. Singleplayer\n");
+    scanf("%d", &choice);
+    if(choice == 2){
+        singlePlayerGame();
+        return 0;
+    }
     Player p1,p2;
 
         initPlayer(&p1,"Player1");
