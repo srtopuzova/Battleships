@@ -4,10 +4,13 @@
 #include "replay.h"
 #include <stdlib.h>
 #include <time.h>
+#include "utils.h"
+#include <stdint.h>
 
 int main()
 {
     int choice;
+    uint32_t key = randomUI32T();
 
     srand(time(NULL));
 
@@ -24,14 +27,15 @@ int main()
 
     if(choice == 3)
     {
-        replayGame();
+        replayGame(key);
         return 0;
     }
 
     FILE *f = fopen("replay.txt", "w");
-
     if(f)
         fclose(f);
+
+    fprintf("Decryption key: %u\n", key);
 
     Player p1, p2;
 
@@ -51,7 +55,7 @@ int main()
 
         hit = attack(&p1, &p2, r, c);
 
-        logMove(p1.name, r, c, hit);
+        logMove(p1.name, r, c, hit, key);
 
         if(hit)
             printf("Hit!\n");
@@ -66,7 +70,7 @@ int main()
 
         hit = attack(&p2, &p1, r, c);
 
-        logMove(p2.name, r, c, hit);
+        logMove(p2.name, r, c, hit, key);
 
         if(hit)
             printf("Hit!\n");
@@ -74,8 +78,7 @@ int main()
             printf("Miss!\n");
     }
 
-    printf("\nWinner: %s\n",
-           p1.shipsLeft ? p1.name : p2.name);
+    printf("\nWinner: %s\n", p1.shipsLeft ? p1.name : p2.name);
 
     return 0;
 }

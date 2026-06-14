@@ -1,23 +1,21 @@
 #include <stdio.h>
 #include "replay.h"
+#include "utils.h"
+#include <stdint.h>
 
-void logMove(const char *player, int row, int col, int hit)
+void logMove(const char *player, int row, int col, int hit, uint32_t key)
 {
     FILE *f = fopen("replay.txt", "a");
 
     if(f == NULL)
         return;
 
-    fprintf(f, "%s %d %d %d\n",
-            player,
-            row,
-            col,
-            hit);
+    fprintf(f, "%s %llu\n", player, encryptMove(row, col, hit, key));
 
     fclose(f);
 }
 
-void replayGame()
+void replayGame(uint32_t key)
 {
     FILE *f = fopen("replay.txt", "r");
 
@@ -29,19 +27,11 @@ void replayGame()
 
     char player[50];
     int row, col, hit;
+    uint64_t packedMove;
 
-    while(fscanf(f,
-                 "%49s %d %d %d",
-                 player,
-                 &row,
-                 &col,
-                 &hit) == 4)
-    {
-        printf("%s attacked (%d,%d) -> %s\n",
-               player,
-               row,
-               col,
-               hit ? "HIT" : "MISS");
+    while(fscanf(f, "%s %llu", player, &packedMove) == 2) {
+        decryptMove(packedMove, key, &row, &col, &hit);
+        printf("%s attacked (%d, %d) and it was a %s.\n", player, row, col, hit ? "hit" : "miss");
     }
 
     fclose(f);

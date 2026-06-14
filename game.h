@@ -7,14 +7,14 @@
 typedef struct
 {
     char name[50];
-        char board[SIZE][SIZE];
-            int shipsLeft;
-            } Player;
+    char board[SIZE][SIZE];
+    int shipsLeft;
+} Player;
 
-            void initPlayer(Player *p, const char *name);
-            void placeShips(Player *p);
-            void printBoard(Player *p);
-            int attack(Player *attacker, Player *defender, int row, int col);
+void initPlayer(Player *p, const char *name);
+void placeShips(Player *p);
+void printBoard(Player *p);
+int attack(Player *attacker, Player *defender, int row, int col);
 
-            #endif
+#endif
             
