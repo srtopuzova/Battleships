@@ -7,6 +7,8 @@
 #include "utils.h"
 #include <stdint.h>
 
+#define DEBUG_MODE 0
+
 int main()
 {
     int choice;
@@ -33,9 +35,12 @@ int main()
 
     FILE *f = fopen("replay.txt", "w");
     if(f)
+    {
+#if DEBUG_MODE
+        fprintf(f, "Decryption key: %u\n", key);
+#endif
         fclose(f);
-
-    fprintf("Decryption key: %u\n", key);
+    }
 
     Player p1, p2;
 
